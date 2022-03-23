@@ -4,17 +4,17 @@
 \alias{predict_from_curve}
 \title{Use a Standard Curve to Calculate Unkown Values}
 \usage{
-predict_from_curve(model, unkowns)
+predict_from_curve(model, unknowns)
 }
 \arguments{
 \item{model}{A linear model, created with either \code{lm()} or
 \code{standard::fit_standard_curve()}}
 
-\item{unkowns}{A numeric vector of unkown values, which the standard curve
+\item{unknowns}{A numeric vector of unknown values, which the standard curve
 will be used to predict their values.}
 }
 \value{
-a \link[tibble:tibble-package]{tibble} with a column for the unkown
+a \link[tibble:tibble-package]{tibble} with a column for the unknown
 values, and a column \code{.fitted} for the predicted values, based on the
 standard curve.
 }
@@ -22,10 +22,14 @@ standard curve.
 Use a Standard Curve to Calculate Unkown Values
 }
 \examples{
-prot <- c(0.000, 0.016, 0.031, 0.063, 0.125, 0.250, 0.500, 1.000,
-          0.000, 0.016, 0.031, 0.063, 0.125, 0.250, 0.500, 1.000)
-abs <- c(0.329, 0.352, 0.349, 0.379, 0.417, 0.491, 0.668, 0.956,
-         0.327, 0.341, 0.355, 0.383, 0.417, 0.446, 0.655, 0.905)
+prot <- c(
+  0.000, 0.016, 0.031, 0.063, 0.125, 0.250, 0.500, 1.000,
+  0.000, 0.016, 0.031, 0.063, 0.125, 0.250, 0.500, 1.000
+)
+abs <- c(
+  0.329, 0.352, 0.349, 0.379, 0.417, 0.491, 0.668, 0.956,
+  0.327, 0.341, 0.355, 0.383, 0.417, 0.446, 0.655, 0.905
+)
 
 data <- tibble::tibble(
   abs = abs,
@@ -33,9 +37,9 @@ data <- tibble::tibble(
   somthing = seq_along(abs)
 )
 
-unk <- c(0.554, 0.568, 0.705)
+unknowns <- c(0.554, 0.568, 0.705)
 
-standard::fit_standard_curve(data, prot, abs) \%>\%
-  standard::predict_from_curve(unk)
-
+data \%>\%
+  standard::fit_standard_curve(prot, abs) \%>\%
+  standard::predict_from_curve(unknowns)
 }

@@ -28,10 +28,10 @@ fit_standard_curve <- function(data, conc, resp) {
 #'
 #' @param model A linear model, created with either `lm()` or
 #'   `standard::fit_standard_curve()`
-#' @param unkowns A numeric vector of unkown values, which the standard curve
+#' @param unknowns A numeric vector of unknown values, which the standard curve
 #'   will be used to predict their values.
 #'
-#' @return a [tibble][tibble::tibble-package] with a column for the unkown
+#' @return a [tibble][tibble::tibble-package] with a column for the unknown
 #'   values, and a column `.fitted` for the predicted values, based on the
 #'   standard curve.
 #' @export
@@ -53,17 +53,19 @@ fit_standard_curve <- function(data, conc, resp) {
 #'   somthing = seq_along(abs)
 #' )
 #'
-#' unk <- c(0.554, 0.568, 0.705)
+#' unknowns <- c(0.554, 0.568, 0.705)
 #'
-#' standard::fit_standard_curve(data, prot, abs) %>%
-#'   standard::predict_from_curve(unk)
-predict_from_curve <- function(model, unkowns) {
-  stopifnot(is.vector(unkowns))
+#' data %>%
+#'   standard::fit_standard_curve(prot, abs) %>%
+#'   standard::predict_from_curve(unknowns)
+
+predict_from_curve <- function(model, unknowns) {
+  stopifnot(is.vector(unknowns))
 
   variable_names <- colnames(model$model)
 
   unk <- tibble::tibble(
-    !!variable_names[2] := unkowns
+    !!variable_names[2] := unknowns
   )
 
   calculated_data <- purrr::quietly(broom::augment)(model, newdata = unk)$result %>%
