@@ -9,13 +9,12 @@
 #' @export
 #'
 #' @examples
-
 fit_standard_curve <- function(data, conc, resp) {
 
   # do lots of quasiquotation magic to make the formula work with any columns
   in_conc <- rlang::enquo(conc)
   in_resp <- rlang::enquo(resp)
-  .f <- rlang::expr(!! dplyr::sym(rlang::quo_name(in_conc)) ~ !! dplyr::sym(rlang::quo_name(in_resp)))
+  .f <- rlang::expr(!!dplyr::sym(rlang::quo_name(in_conc)) ~ !!dplyr::sym(rlang::quo_name(in_resp)))
 
   # fit the actual linear model with the data and the created forumla
   mod <- stats::lm(.f, data = data)
@@ -39,6 +38,25 @@ fit_standard_curve <- function(data, conc, resp) {
 #' @importFrom rlang .data :=
 #'
 #' @examples
+#' prot <- c(
+#'   0.000, 0.016, 0.031, 0.063, 0.125, 0.250, 0.500, 1.000,
+#'   0.000, 0.016, 0.031, 0.063, 0.125, 0.250, 0.500, 1.000
+#' )
+#' abs <- c(
+#'   0.329, 0.352, 0.349, 0.379, 0.417, 0.491, 0.668, 0.956,
+#'   0.327, 0.341, 0.355, 0.383, 0.417, 0.446, 0.655, 0.905
+#' )
+#'
+#' data <- tibble::tibble(
+#'   abs = abs,
+#'   prot = prot,
+#'   somthing = seq_along(abs)
+#' )
+#'
+#' unk <- c(0.554, 0.568, 0.705)
+#'
+#' standard::fit_standard_curve(data, prot, abs) %>%
+#'   standard::predict_from_curve(unk)
 predict_from_curve <- function(model, unkowns) {
   stopifnot(is.vector(unkowns))
 
@@ -52,14 +70,7 @@ predict_from_curve <- function(model, unkowns) {
     dplyr::select(
       !!variable_names[2],
       !!variable_names[1] := .data$.fitted
-      )
+    )
 
   calculated_data
-
 }
-
-
-
-
-
-
