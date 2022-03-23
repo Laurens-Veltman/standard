@@ -25,3 +25,5 @@ Imports:
     purrr,
     rlang,
     dplyr
+URL: https://github.com/rforbiochemists/standard
+BugReports: https://github.com/rforbiochemists/standard/issues
