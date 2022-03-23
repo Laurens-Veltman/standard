@@ -49,8 +49,7 @@ fit_standard_curve <- function(data, conc, resp) {
 #'
 #' data <- tibble::tibble(
 #'   abs = abs,
-#'   prot = prot,
-#'   somthing = seq_along(abs)
+#'   prot = prot
 #' )
 #'
 #' unknowns <- c(0.554, 0.568, 0.705)
