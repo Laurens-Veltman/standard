@@ -7,14 +7,15 @@
 #' @param resp Name of the column that contains the response values for the
 #'   standard curve.
 #'
-#' @return A linear model object to be used as a standard curve, for use with
+#' @return A linear model ( [lm()][stats::lm] ) object to be used as a standard curve, for use with
 #'   `standard::std_curve_predict()` `broom::augment()` or `stats::predict()`.
 #' @export
 #'
 #' @examples
 std_curve_fit <- function(data, conc, resp) {
 
-  # do lots of quasiquotation magic to make the formula work with any columns
+  # do lots of quasiquotation magic to make the formula work with any of the
+  # user-supplied columns
   in_conc <- rlang::enquo(conc)
   in_resp <- rlang::enquo(resp)
   .f <- rlang::expr(!!dplyr::sym(rlang::quo_name(in_conc)) ~ !!dplyr::sym(rlang::quo_name(in_resp)))

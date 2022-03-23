@@ -7,14 +7,17 @@
 std_curve_fit(data, conc, resp)
 }
 \arguments{
-\item{data}{A \code{data.frame} that contains the columns for concentration and observed response for the standard curve.}
+\item{data}{A \code{data.frame} that contains the columns for concentration and
+observed response for the standard curve.}
 
-\item{conc}{Name of the column that contains the concentration for the standard curve.}
+\item{conc}{Name of the column that contains the concentration for the
+standard curve.}
 
-\item{resp}{Name of the column that contains the response values for the standard curve.}
+\item{resp}{Name of the column that contains the response values for the
+standard curve.}
 }
 \value{
-A linear model object to be used as a standard curve, for use with
+A linear model ( \link[stats:lm]{lm()} ) object to be used as a standard curve, for use with
 \code{standard::std_curve_predict()} \code{broom::augment()} or \code{stats::predict()}.
 }
 \description{
