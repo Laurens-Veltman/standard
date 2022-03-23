@@ -15,11 +15,9 @@ fit_standard_curve <- function(data, conc, resp) {
   # do lots of quasiquotation magic to make the formula work with any columns
   in_conc <- rlang::enquo(conc)
   in_resp <- rlang::enquo(resp)
-
-  # setup the formula
   .f <- rlang::expr(!! dplyr::sym(rlang::quo_name(in_conc)) ~ !! dplyr::sym(rlang::quo_name(in_resp)))
 
-  # fit the actual linear model
+  # fit the actual linear model with the data and the created forumla
   mod <- stats::lm(.f, data = data)
 
   # return the model
@@ -44,14 +42,20 @@ fit_standard_curve <- function(data, conc, resp) {
 predict_from_curve <- function(model, unkowns) {
   stopifnot(is.vector(unkowns))
 
-  measured_name <- names(stats::coef(model))[2]
+  variable_names <- colnames(model$model)
 
   unk <- tibble::tibble(
-    # rlang::`:=`(!!measured_name, unkowns)
-    !!measured_name := unkowns
+    !!variable_names[2] := unkowns
   )
-  purrr::quietly(broom::augment)(model, newdata = unk)$result %>%
-    dplyr::select(!!measured_name, .data$.fitted)
+
+  calculated_data <- purrr::quietly(broom::augment)(model, newdata = unk)$result %>%
+    dplyr::select(
+      !!variable_names[2],
+      !!variable_names[1] := .data$.fitted
+      )
+
+  calculated_data
+
 }
 
 

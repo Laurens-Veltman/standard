@@ -2,7 +2,7 @@ test_that("multiplication works", {
 
   ideal_results <- tibble::tibble(
     abs     = c(0.554, 0.568, 0.705),
-    .fitted = c(0.361, 0.384, 0.609)
+    prot = c(0.361, 0.384, 0.609)
   )
 
   prot <- c(0.000, 0.016, 0.031, 0.063, 0.125, 0.250, 0.500, 1.000,
