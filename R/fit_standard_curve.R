@@ -1,15 +1,18 @@
 #' Create a Standard Curve From Known Data
 #'
-#' @param data A `data.frame` that contains the columns for concentration and observed response for the standard curve.
-#' @param conc Name of the column that contains the concentration for the standard curve.
-#' @param resp Name of the column that contains the response values for the standard curve.
+#' @param data A `data.frame` that contains the columns for concentration and
+#'   observed response for the standard curve.
+#' @param conc Name of the column that contains the concentration for the
+#'   standard curve.
+#' @param resp Name of the column that contains the response values for the
+#'   standard curve.
 #'
 #' @return A linear model object to be used as a standard curve, for use with
-#'   `standard::predict_from_curve()` `broom::augment()` or `stats::predict()`.
+#'   `standard::std_curve_predict()` `broom::augment()` or `stats::predict()`.
 #' @export
 #'
 #' @examples
-fit_standard_curve <- function(data, conc, resp) {
+std_curve_fit <- function(data, conc, resp) {
 
   # do lots of quasiquotation magic to make the formula work with any columns
   in_conc <- rlang::enquo(conc)
@@ -27,7 +30,7 @@ fit_standard_curve <- function(data, conc, resp) {
 #' Use a Standard Curve to Calculate Unkown Values
 #'
 #' @param model A linear model, created with either `lm()` or
-#'   `standard::fit_standard_curve()`
+#'   `standard::std_curve_fit()`
 #' @param unknowns A numeric vector of unknown values, which the standard curve
 #'   will be used to predict their values.
 #'
@@ -55,10 +58,9 @@ fit_standard_curve <- function(data, conc, resp) {
 #' unknowns <- c(0.554, 0.568, 0.705)
 #'
 #' data %>%
-#'   standard::fit_standard_curve(prot, abs) %>%
-#'   standard::predict_from_curve(unknowns)
-
-predict_from_curve <- function(model, unknowns) {
+#'   standard::std_curve_fit(prot, abs) %>%
+#'   standard::std_curve_predict(unknowns)
+std_curve_predict <- function(model, unknowns) {
   stopifnot(is.vector(unknowns))
 
   variable_names <- colnames(model$model)

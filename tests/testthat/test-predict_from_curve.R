@@ -24,8 +24,8 @@ test_that("Basic Standard Curve Workflow", {
     abs = c(0.554, 0.568, 0.705)
   )
 
-  calculated <- standard::fit_standard_curve(data, prot, abs) %>%
-    standard::predict_from_curve(unk$abs)
+  calculated <- standard::std_curve_fit(data, prot, abs) %>%
+    standard::std_curve_predict(unk$abs)
 
   expect_equal(ideal_results, round(calculated, 3))
 })
