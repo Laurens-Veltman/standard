@@ -1,0 +1,27 @@
+Package: standard
+Title: Simplified Fitting and Use of Standard Curves
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Brady",
+           family = "Johnston",
+           role = c("aut", "cre"),
+           email = "brady.johnston@me.com",
+           comment = c(ORCID = "0000-0001-6301-2269"))
+Description: {standard} provices a more simplified interface to the linear 
+  models system in R for the fitting of standard curves and their usage in 
+  biochemistry and molecular biology.
+License: MIT + file LICENSE
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports: 
+    tibble,
+    magrittr,
+    broom,
+    purrr,
+    rlang,
+    dplyr
