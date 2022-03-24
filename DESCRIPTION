@@ -24,6 +24,11 @@ Imports:
     broom,
     purrr,
     rlang,
-    dplyr
+    dplyr,
+    ggpp,
+    stringr,
+    ggtext,
+    ggplot2,
+    methods
 URL: https://github.com/rforbiochemists/standard
 BugReports: https://github.com/rforbiochemists/standard/issues

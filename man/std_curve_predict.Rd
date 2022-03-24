@@ -4,7 +4,7 @@
 \alias{std_curve_predict}
 \title{Use a Standard Curve to Calculate Unkown Values}
 \usage{
-std_curve_predict(model, unknowns)
+std_curve_predict(model, unknowns, digits = 3)
 }
 \arguments{
 \item{model}{A linear model, created with either \code{lm()} or
