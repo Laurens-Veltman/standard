@@ -1,42 +1,22 @@
----
-output: github_document
----
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
-)
-
-ragg_png = function(..., res = 300) {
-  ragg::agg_png(..., res = res, units = "in")
-}
-knitr::opts_chunk$set(
-  comment = " ",
-  echo = TRUE,
-  message = FALSE,
-  warning = FALSE,
-  dev = "ragg_png",
-  R.options = list(width = 80)
-)
-```
 
 # standard
 
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![CRAN status](https://www.r-pkg.org/badges/version/standard)](https://CRAN.R-project.org/package=standard)
+
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/standard)](https://CRAN.R-project.org/package=standard)
 <!-- badges: end -->
 
-The goal of standard is to ...
+The goal of standard is to …
 
 ## Installation
 
-Currently no published on CRAN, but install from GitHub with the following:
+Currently no published on CRAN, but install from GitHub with the
+following:
 
 ``` r
 remotes::install_github("rforbiochemists/standard")
@@ -46,7 +26,7 @@ remotes::install_github("rforbiochemists/standard")
 
 This is a basic example which shows you how to solve a common problem:
 
-```{r example}
+``` r
 library(standard)
 
 # Protein Concentrations
@@ -68,10 +48,13 @@ mod <- data %>%
   std_curve_fit(Protein, Absorbance)
 
 plot(mod)
-
-std_curve_predict(mod, unknowns) %>% 
-  plot()
-
 ```
 
+<img src="man/figures/README-example-1.png" width="100%" />
 
+``` r
+std_curve_predict(mod, unknowns) %>% 
+  plot()
+```
+
+<img src="man/figures/README-example-2.png" width="100%" />

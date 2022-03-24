@@ -24,7 +24,7 @@ std_curve_fit <- function(data, conc, resp) {
   mod <- stats::lm(.f, data = data)
 
   # return the model
-  class(mod) <- c(class(mod), "std_curve")
+  class(mod) <- c("std_curve", "lm", "oldClass")
 
   mod
 }
@@ -139,17 +139,42 @@ as.data.frame.std_prediction <- function(x, row.names = NULL, optional = FALSE, 
 #' @examples
 std_curve_plot <- function(data) {
 
-  if (!methods::is(data, "std_prediction")) {
-    stop("Input must be the output from std_curve_pred().")
+  if (!(methods::is(data, "std_prediction") | methods::is(data, "lm") | methods::is(data, "std_curve"))) {
+    stop("Input must be the output from std_curve_pred() or std_curve_fit().")
   }
 
-  r_squared <- summary(data[["std_curve"]])[["r.squared"]]
-  raw_data <- data[["std_curve"]][["model"]]
+  if (methods::is(data, "std_prediction")) {
+    r_squared <- summary(data[["std_curve"]])[["r.squared"]]
+    raw_data <- data[["std_curve"]][["model"]]
+    model <- data[["std_curve"]]
+    pred_data <- data[["calc_data"]]
+
+    formula_label <- paste0(
+      "R<sup>2</sup> = ",
+      round(r_squared, 2),
+      "<br>",
+      std_paste_formula(model),
+      "<br>Calculated Unknowns:"
+    )
+  } else {
+    r_squared <- summary(data)[["r.squared"]]
+    raw_data <- data[["model"]]
+    model <- data
+    formula_label <- paste0(
+      "R<sup>2</sup> = ",
+      round(r_squared, 2),
+      "<br>",
+      std_paste_formula(model)
+    )
+  }
+
   var_names <- colnames(raw_data)
   annotation_data <- data.frame(x = lerp_vec(raw_data[, 1], 0.01),
                                 y = lerp_vec(raw_data[, 2], 0.8))
 
-  raw_data %>%
+
+
+  plt <- raw_data %>%
     ggplot2::ggplot(
       ggplot2::aes_string(var_names[1], var_names[2])
     ) +
@@ -160,49 +185,48 @@ std_curve_plot <- function(data) {
       formula = "y ~ x",
       se = FALSE
     ) +
-
-    ggplot2::geom_point(
-      data = data[["calc_data"]],
-      shape = 4,
-      size = 5
-    ) +
-    ggplot2::geom_segment(
-      data = data[["calc_data"]],
-      ggplot2::aes_string(
-        x = var_names[1],
-        xend = var_names[1],
-        y = 0,
-        yend = var_names[2]
-      ),
-      linetype = "dashed"
-    ) +
     ggplot2::theme_classic() +
     ggtext::geom_richtext(
       data = annotation_data,
       mapping = ggplot2::aes(
         x = .data$x,
         y = .data$y,
-        label = paste0(
-          "R<sup>2</sup> = ",
-          round(r_squared, 2),
-          "<br>",
-          std_paste_formula(data[["std_curve"]]),
-          "<br>Calculated Unknowns:"
-        )
+        label = formula_label
       ),
       fill = NA,
       label.color = NA,
       label.padding = grid::unit(rep(0, 4), "pt"),
       vjust = -0.1,
       hjust = 0
-    ) +
-    ggpp::geom_table(
-      data = annotation_data,
-      label = list(data$calc_data),
-      mapping = ggplot2::aes(x = .data$x, y = .data$y),
-      hjust = 0,
-      vjust = 1.1
     )
+
+  if (methods::is(data, "std_prediction")) {
+    plt <- plt +
+      ggplot2::geom_point(
+        data = pred_data,
+        shape = 4,
+        size = 5
+      ) +
+      ggplot2::geom_segment(
+        data = pred_data,
+        ggplot2::aes_string(
+          x = var_names[1],
+          xend = var_names[1],
+          y = 0,
+          yend = var_names[2]
+        ),
+        linetype = "dashed"
+      ) +
+      ggpp::geom_table(
+        data = annotation_data,
+        label = list(pred_data),
+        mapping = ggplot2::aes(x = .data$x, y = .data$y),
+        hjust = 0,
+        vjust = 1.1
+      )
+  }
+
+  plt
 
 }
 
@@ -214,6 +238,16 @@ std_curve_plot <- function(data) {
 #' @return
 #' @export
 plot.std_prediction <- function(x, ...) {
+  standard::std_curve_plot(x)
+}
+#' Title
+#'
+#' @param x
+#' @param ...
+#'
+#' @return
+#' @export
+plot.std_curve <- function(x, ...) {
   standard::std_curve_plot(x)
 }
 

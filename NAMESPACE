@@ -2,6 +2,7 @@
 
 S3method("[",std_prediction)
 S3method(as.data.frame,std_prediction)
+S3method(plot,std_curve)
 S3method(plot,std_prediction)
 S3method(print,std_prediction)
 export("%>%")
