@@ -8,7 +8,7 @@
 #'   standard curve.
 #'
 #' @return A linear model ( [lm()][stats::lm] ) object to be used as a standard curve, for use with
-#'   `standard::std_curve_predict()` `broom::augment()` or `stats::predict()`.
+#'   `standard::std_curve_calc()` `broom::augment()` or `stats::predict()`.
 #' @export
 #'
 #' @examples
@@ -62,8 +62,8 @@ std_curve_fit <- function(data, conc, resp) {
 #'
 #' data %>%
 #'   standard::std_curve_fit(prot, abs) %>%
-#'   standard::std_curve_predict(unknowns)
-std_curve_predict <- function(model, unknowns, digits = 3) {
+#'   standard::std_curve_calc(unknowns)
+std_curve_calc <- function(model, unknowns, digits = 3) {
   stopifnot(is.vector(unknowns))
 
   variable_names <- colnames(model$model)

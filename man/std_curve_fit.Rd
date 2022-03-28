@@ -18,7 +18,7 @@ standard curve.}
 }
 \value{
 A linear model ( \link[stats:lm]{lm()} ) object to be used as a standard curve, for use with
-\code{standard::std_curve_predict()} \code{broom::augment()} or \code{stats::predict()}.
+\code{standard::std_curve_calc()} \code{broom::augment()} or \code{stats::predict()}.
 }
 \description{
 Create a Standard Curve From Known Data
