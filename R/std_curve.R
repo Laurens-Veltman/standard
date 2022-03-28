@@ -193,8 +193,10 @@ as.data.frame.std_calc <- function(x, row.names = NULL, optional = FALSE, ...) {
 #'   plot()
 std_curve_plot <- function(data) {
 
-  if (!(methods::is(data, "std_calc") | methods::is(data, "lm") | methods::is(data, "std_curve"))) {
-    stop("Input must be the output from std_curve_pred() or std_curve_fit().")
+  if (!(methods::is(data, "std_calc") |
+        methods::is(data, "lm") |
+        methods::is(data, "std_curve"))) {
+    stop("Input must be the output from either std_curve_fit() or std_curve_calc().")
   }
 
   if (methods::is(data, "std_calc")) {
@@ -211,9 +213,8 @@ std_curve_plot <- function(data) {
       std_paste_formula(std_curve),
       "<br>Calculated Unknowns:"
     )
-  } else if (methods::is(data, "std_calc")) {
-    std_calc      <- data
-    std_curve     <- data[["std_curve"]]
+  } else if (methods::is(data, "std_curve")) {
+    std_curve     <- data
     r_squared     <- summary(std_curve)[["r.squared"]]
     raw_data      <- std_curve[["model"]]
     formula_label <- paste0(

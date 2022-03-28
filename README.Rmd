@@ -94,7 +94,7 @@ our_std_curve <- std_curve_fit(
   conc = Protein, 
   resp = Absorbance
   )
-our_std_curve
+summary(our_std_curve)
 ```
 
 We can see that internally, R has fitted a linear model to the data, and has printed a range of summary statistics. While these are useful for more complex modelling, we are mostly concerned with the $R^{2}$ value, to tell how linear our standards are, and what the final equation is for calculating protein concentrations from the absorbance readings of unknown samples.

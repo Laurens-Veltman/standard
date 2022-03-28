@@ -71,9 +71,9 @@ Below we are doing the following:
 
 1.  Creating vectors of the `prot` concentrations & `abs`
     concentrations.
-2.  Combining them both into a `data.frame`
+2.  Combining them both into a `data.frame` called `assay_data`
 3.  Fitting a standard curve with `std_curve_fit()`
-4.  Using the standard curve to calculate the unkowns with
+4.  Using the standard curve to calculate the unknowns with
     `std_curve_calc()`
 5.  Plotting the final results with `plot()`.
 
@@ -108,14 +108,25 @@ our_std_curve <- std_curve_fit(
   conc = Protein, 
   resp = Absorbance
   )
-our_std_curve
+summary(our_std_curve)
   
   Call:
   stats::lm(formula = .f, data = data)
   
+  Residuals:
+        Min        1Q    Median        3Q       Max 
+  -0.048237 -0.013238 -0.008318  0.008180  0.067081 
+  
   Coefficients:
-  (Intercept)   Absorbance  
-       -0.551        1.646
+              Estimate Std. Error t value Pr(>|t|)    
+  (Intercept) -0.55101    0.02031  -27.13 1.67e-13 ***
+  Absorbance   1.64558    0.03878   42.43 3.42e-16 ***
+  ---
+  Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  
+  Residual standard error: 0.03044 on 14 degrees of freedom
+  Multiple R-squared:  0.9923,  Adjusted R-squared:  0.9917 
+  F-statistic:  1801 on 1 and 14 DF,  p-value: 3.421e-16
 ```
 
 We can see that internally, R has fitted a linear model to the data, and
@@ -145,7 +156,11 @@ values for you.
 ``` r
 unk <- c(0.554, 0.568, 0.705)
 
-calc_unk <- std_curve_calc(our_std_curve, unknowns = unk)
+calc_unk <- std_curve_calc(
+  std_curve = our_std_curve, 
+  unknowns = unk
+  )
+
 calc_unk
   # A tibble: 3 x 2
     Absorbance Protein
