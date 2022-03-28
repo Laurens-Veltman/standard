@@ -2,16 +2,16 @@
 % Please edit documentation in R/fit_standard_curve.R
 \name{std_paste_formula}
 \alias{std_paste_formula}
-\title{Title}
+\title{Extract and Paste Formula From Standard Curve}
 \usage{
-std_paste_formula(model, digits = 3)
+std_paste_formula(std_curve, digits = 3)
 }
 \arguments{
 \item{digits}{}
 }
 \value{
-
+a string of the extracted formular from the standard curve
 }
 \description{
-Title
+Extract and Paste Formula From Standard Curve
 }

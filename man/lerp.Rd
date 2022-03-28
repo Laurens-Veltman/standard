@@ -7,10 +7,11 @@
 lerp(x, y, z = 0.5)
 }
 \arguments{
-\item{z}{}
-}
-\value{
+\item{x}{Value to lerp from.}
 
+\item{y}{Value to lerp to.}
+
+\item{z}{Proportion to lerp by (0-1).}
 }
 \description{
 Title

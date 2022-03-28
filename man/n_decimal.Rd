@@ -9,9 +9,6 @@ n_decimal(x)
 \arguments{
 \item{x}{Number to calculate decimal places.}
 }
-\value{
-
-}
 \description{
 Finds Minimum Number of Decimal Places
 }

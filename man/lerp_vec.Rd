@@ -2,16 +2,16 @@
 % Please edit documentation in R/utils.R
 \name{lerp_vec}
 \alias{lerp_vec}
-\title{Title}
+\title{Lerp the Max and Min of a Vector.}
 \usage{
 lerp_vec(vec, z = 0.5)
 }
 \arguments{
-\item{z}{}
-}
-\value{
+\item{vec}{numeric vector of values.}
 
+\item{z}{proportion to lerp by (0-1).}
 }
 \description{
-Title
+Finds the minium value of a vector and the maximum value of a vector, and
+then lerps between the two by the factor \code{z}.
 }

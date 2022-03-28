@@ -2,7 +2,6 @@
 #'
 #' @param x Number to calculate decimal places.
 #'
-#' @return
 n_decimal <- function(x) {
   max_dec <- stringr::str_extract(as.character(x), "\\.\\d+$") %>%
     nchar() %>%
@@ -13,28 +12,21 @@ n_decimal <- function(x) {
 
 #' Title
 #'
-#' @param x
-#' @param y
-#' @param z
-#'
-#' @return
-#' @export
-#'
-#' @examples
+#' @param x Value to lerp from.
+#' @param y Value to lerp to.
+#' @param z Proportion to lerp by (0-1).
 lerp <- function(x, y, z = 0.5) {
   x + (y - x) * z
 }
 
 
-#' Title
+#' Lerp the Max and Min of a Vector.
 #'
-#' @param vec
-#' @param z
+#' Finds the minium value of a vector and the maximum value of a vector, and
+#' then lerps between the two by the factor `z`.
 #'
-#' @return
-#' @export
-#'
-#' @examples
+#' @param vec numeric vector of values.
+#' @param z proportion to lerp by (0-1).
 lerp_vec <- function(vec, z = 0.5) {
   x <- min(vec)
   y <- max(vec)

@@ -2,12 +2,12 @@
 % Please edit documentation in R/fit_standard_curve.R
 \name{std_curve_calc}
 \alias{std_curve_calc}
-\title{Use a Standard Curve to Calculate Unkown Values}
+\title{Use a Standard Curve to Calculate Unknown Values}
 \usage{
-std_curve_calc(model, unknowns, digits = 3)
+std_curve_calc(std_curve, unknowns, digits = 3)
 }
 \arguments{
-\item{model}{A linear model, created with either \code{lm()} or
+\item{std_curve}{A linear model, created with either \code{lm()} or
 \code{standard::std_curve_fit()}}
 
 \item{unknowns}{A numeric vector of unknown values, which the standard curve
@@ -19,26 +19,29 @@ values, and a column \code{.fitted} for the predicted values, based on the
 standard curve.
 }
 \description{
-Use a Standard Curve to Calculate Unkown Values
+Use a Standard Curve to Calculate Unknown Values
 }
 \examples{
-prot <- c(
-  0.000, 0.016, 0.031, 0.063, 0.125, 0.250, 0.500, 1.000,
-  0.000, 0.016, 0.031, 0.063, 0.125, 0.250, 0.500, 1.000
-)
-abs <- c(
-  0.329, 0.352, 0.349, 0.379, 0.417, 0.491, 0.668, 0.956,
-  0.327, 0.341, 0.355, 0.383, 0.417, 0.446, 0.655, 0.905
+library(standard)
+
+# Protein concentrations of the standards used in the assay
+prot <- c(0.000, 0.016, 0.031, 0.063, 0.125, 0.250, 0.500, 1.000,
+          0.000, 0.016, 0.031, 0.063, 0.125, 0.250, 0.500, 1.000)
+
+# absorbance readins from the standards used in the assay
+abs <- c(0.329, 0.352, 0.349, 0.379, 0.417, 0.491, 0.668, 0.956,
+         0.327, 0.341, 0.355, 0.383, 0.417, 0.446, 0.655, 0.905)
+assay_data <- data.frame(
+  Protein = prot,
+  Absorbance = abs
 )
 
-data <- tibble::tibble(
-  abs = abs,
-  prot = prot
-)
+# unknwon concentrations
+unk <- c(0.554, 0.568, 0.705)
 
-unknowns <- c(0.554, 0.568, 0.705)
 
-data \%>\%
-  standard::std_curve_fit(prot, abs) \%>\%
-  standard::std_curve_calc(unknowns)
+assay_data \%>\%
+  std_curve_fit(Protein, Absorbance) \%>\%
+  std_curve_calc(unk) \%>\%
+  plot()
 }

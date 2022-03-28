@@ -110,7 +110,11 @@ With the formula now known, you can either use this formula to manually calculat
 ```{r calc-unk}
 unk <- c(0.554, 0.568, 0.705)
 
-calc_unk <- std_curve_calc(our_std_curve, unknowns = unk)
+calc_unk <- std_curve_calc(
+  std_curve = our_std_curve, 
+  unknowns = unk
+  )
+
 calc_unk
 ```
 
