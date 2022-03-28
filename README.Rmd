@@ -34,7 +34,7 @@ knitr::opts_chunk$set(
 
 `{standard}` provides a simplified interface for fitting and using standard curves in R for work in biochemistry and molecular biology. Many assays conducted in laboratory environments require the creation of standard curves from known samples to then calculate the concentrations of unkown samples. 
 
-The workflow usually includes the fitting of a model (usually linear) to a set of readings (in the example below, absorbance @ 660 nm) from samples of known concentrations, extracting an equation from the model in the format $y = mx + c$ and using this formula to calculate the unkown values.
+The workflow usually includes the fitting of a model (usually linear) to a set of readings (in the example below, absorbance @ 660 nm) from samples of known concentrations, extracting an equation from the model in the format `y = mx + c` and using this formula to calculate the unkown values.
 
 This task can be conducted in Microsoft Excel, other spreadsheet programs, and various software packages that come with some plate readers and other pieces of laboratory equipment.
 
@@ -97,7 +97,7 @@ our_std_curve <- std_curve_fit(
 summary(our_std_curve)
 ```
 
-We can see that internally, R has fitted a linear model to the data, and has printed a range of summary statistics. While these are useful for more complex modelling, we are mostly concerned with the $R^{2}$ value, to tell how linear our standards are, and what the final equation is for calculating protein concentrations from the absorbance readings of unknown samples.
+We can see that internally, R has fitted a linear model to the data, and has printed a range of summary statistics. While these are useful for more complex modelling, we are mostly concerned with the R<sup>2</sup> value, to tell how linear our standards are, and what the final equation is for calculating protein concentrations from the absorbance readings of unknown samples.
 
 We can use the base `plot()` function to plot the standard curve with relevant information included on the plot.
 

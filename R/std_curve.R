@@ -37,15 +37,20 @@
 #'
 #' assay_data %>%
 #'   std_curve_fit(Protein, Absorbance) %>%
-#'   std_curve_calc(unk) %>%
 #'   plot()
 std_curve_fit <- function(data, conc, resp) {
 
   # do lots of quasiquotation magic to make the formula work with any of the
   # user-supplied columns
+  # enquoting the given columns, so they can be used in a function
   in_conc <- rlang::enquo(conc)
   in_resp <- rlang::enquo(resp)
-  .f <- rlang::expr(!!dplyr::sym(rlang::quo_name(in_conc)) ~ !!dplyr::sym(rlang::quo_name(in_resp)))
+  # use quo_name, sym and expr to define the forumlar for the model from the
+  # user supplied columns
+  .f <- rlang::expr(
+    !!dplyr::sym(rlang::quo_name(in_conc)) ~
+      !!dplyr::sym(rlang::quo_name(in_resp))
+    )
 
   # fit the actual linear model with the data and the created forumla
   std_curve <- stats::lm(.f, data = data)
@@ -281,7 +286,7 @@ std_curve_plot <- function(data) {
     raw_data <- std_curve[["model"]]
     formula_label <- paste0(
       "R<sup>2</sup> = ",
-      round(r_squared, 2),
+      round(r_squared, 3),
       "<br>",
       std_paste_formula(std_curve)
     )
