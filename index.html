@@ -70,7 +70,7 @@
 <!-- badges: start -->
 
 <p><a href="https://github.com/rforbiochemists/standard" class="external-link">standard</a> provides a simplified interface for fitting and using standard curves in R for work in biochemistry and molecular biology. Many assays conducted in laboratory environments require the creation of standard curves from known samples to then calculate the concentrations of unkown samples.</p>
-<p>The workflow usually includes the fitting of a model (usually linear) to a set of readings (in the example below, absorbance @ 660 nm) from samples of known concentrations, extracting an equation from the model in the format <img src="https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&amp;space;%5Cbg_white&amp;space;y%20%3D%20mx%20%2B%20c" title="y = mx + c" alt="y = mx + c"> and using this formula to calculate the unkown values.</p>
+<p>The workflow usually includes the fitting of a model (usually linear) to a set of readings (in the example below, absorbance @ 660 nm) from samples of known concentrations, extracting an equation from the model in the format <code>y = mx + c</code> and using this formula to calculate the unkown values.</p>
 <p>This task can be conducted in Microsoft Excel, other spreadsheet programs, and various software packages that come with some plate readers and other pieces of laboratory equipment.</p>
 <p>These approaches however don’t allow for automation of processing, or reproducibility and transparency of experiments.</p>
 <p>Many wet-lab scientists would like to use the R programming language more in their work, including for the task of fitting and using standard curves. The model-fitting cababiliies and interface in R is enourmous however, and can often be overwhelming and not straight forward, when all a user needs to do is fit one model, and do some calculations with the fitted model. This is where <a href="https://github.com/rforbiochemists/standard" class="external-link">standard</a> comes in.</p>
@@ -96,11 +96,11 @@
 <p>Below we are doing the following:</p>
 <ol style="list-style-type: decimal">
 <li>Creating vectors of the <code>prot</code> concentrations &amp; <code>abs</code> concentrations.</li>
-<li>Combining them both into a <code>data.frame</code>
+<li>Combining them both into a <code>data.frame</code> called <code>assay_data</code>
 </li>
 <li>Fitting a standard curve with <code><a href="reference/std_curve_fit.html">std_curve_fit()</a></code>
 </li>
-<li>Using the standard curve to calculate the unkowns with <code><a href="reference/std_curve_calc.html">std_curve_calc()</a></code>
+<li>Using the standard curve to calculate the unknowns with <code><a href="reference/std_curve_calc.html">std_curve_calc()</a></code>
 </li>
 <li>Plotting the final results with <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>.</li>
 </ol>
@@ -131,15 +131,26 @@
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">conc =</span> Protein, </span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">resp =</span> Absorbance</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>our_std_curve</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(our_std_curve)</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  Call<span class="sc">:</span></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  stats<span class="sc">::</span><span class="fu">lm</span>(<span class="at">formula =</span> .f, <span class="at">data =</span> data)</span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  Coefficients<span class="sc">:</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  (Intercept)   Absorbance  </span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>       <span class="sc">-</span><span class="fl">0.551</span>        <span class="fl">1.646</span></span></code></pre></div>
-<p>We can see that internally, R has fitted a linear model to the data, and has printed a range of summary statistics. While these are useful for more complex modelling, we are mostly concerned with the <img src="https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&amp;space;%5Cbg_white&amp;space;R%5E%7B2%7D" title="R^{2}" alt="R^{2}"> value, to tell how linear our standards are, and what the final equation is for calculating protein concentrations from the absorbance readings of unknown samples.</p>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  Residuals<span class="sc">:</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        Min        1Q    Median        3Q       Max </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="sc">-</span><span class="fl">0.048237</span> <span class="sc">-</span><span class="fl">0.013238</span> <span class="sc">-</span><span class="fl">0.008318</span>  <span class="fl">0.008180</span>  <span class="fl">0.067081</span> </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  Coefficients<span class="sc">:</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>              Estimate Std. Error t value <span class="fu">Pr</span>(<span class="sc">&gt;</span><span class="er">|</span>t<span class="sc">|</span>)    </span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  (Intercept) <span class="sc">-</span><span class="fl">0.55101</span>    <span class="fl">0.02031</span>  <span class="sc">-</span><span class="fl">27.13</span> <span class="fl">1.67e-13</span> <span class="sc">**</span><span class="er">*</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  Absorbance   <span class="fl">1.64558</span>    <span class="fl">0.03878</span>   <span class="fl">42.43</span> <span class="fl">3.42e-16</span> <span class="sc">**</span><span class="er">*</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="sc">---</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  Signif. codes<span class="sc">:</span>  <span class="dv">0</span> <span class="st">'***'</span> <span class="fl">0.001</span> <span class="st">'**'</span> <span class="fl">0.01</span> <span class="st">'*'</span> <span class="fl">0.05</span> <span class="st">'.'</span> <span class="fl">0.1</span> <span class="st">' '</span> <span class="dv">1</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  Residual standard error<span class="sc">:</span> <span class="fl">0.03044</span> on <span class="dv">14</span> degrees of freedom</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  Multiple R<span class="sc">-</span>squared<span class="sc">:</span>  <span class="fl">0.9923</span>,  Adjusted R<span class="sc">-</span>squared<span class="sc">:</span>  <span class="fl">0.9917</span> </span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  F<span class="sc">-</span>statistic<span class="sc">:</span>  <span class="dv">1801</span> on <span class="dv">1</span> and <span class="dv">14</span> DF,  p<span class="sc">-</span>value<span class="sc">:</span> <span class="fl">3.421e-16</span></span></code></pre></div>
+<p>We can see that internally, R has fitted a linear model to the data, and has printed a range of summary statistics. While these are useful for more complex modelling, we are mostly concerned with the R<sup>2</sup> value, to tell how linear our standards are, and what the final equation is for calculating protein concentrations from the absorbance readings of unknown samples.</p>
 <p>We can use the base <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function to plot the standard curve with relevant information included on the plot.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">our_std_curve</span><span class="op">)</span></code></pre></div>
@@ -147,14 +158,18 @@
 <p>With the formula now known, you can either use this formula to manually calculate your protein concentrations from their absorbance values, or use the <code><a href="reference/std_curve_calc.html">std_curve_calc()</a></code> function which will take a <code>standard curve</code> from <code><a href="reference/std_curve_fit.html">std_curve_fit()</a></code> and a numeric vector of observtations (in this case the absorbance readings), and return a data frame of the calculated values for you.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>unk <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.554</span>, <span class="fl">0.568</span>, <span class="fl">0.705</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>calc_unk <span class="ot">&lt;-</span> <span class="fu">std_curve_calc</span>(our_std_curve, <span class="at">unknowns =</span> unk)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>calc_unk</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># A tibble: 3 x 2</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    Absorbance Protein</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>         <span class="sc">&lt;</span>dbl<span class="sc">&gt;</span>   <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>      <span class="fl">0.554</span>   <span class="fl">0.361</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span>      <span class="fl">0.568</span>   <span class="fl">0.384</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="dv">3</span>      <span class="fl">0.705</span>   <span class="fl">0.609</span></span></code></pre></div>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>calc_unk <span class="ot">&lt;-</span> <span class="fu">std_curve_calc</span>(</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">std_curve =</span> our_std_curve, </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">unknowns =</span> unk</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>calc_unk</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># A tibble: 3 x 2</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    Absorbance Protein</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>         <span class="sc">&lt;</span>dbl<span class="sc">&gt;</span>   <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>      <span class="fl">0.554</span>   <span class="fl">0.361</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span>      <span class="fl">0.568</span>   <span class="fl">0.384</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="dv">3</span>      <span class="fl">0.705</span>   <span class="fl">0.609</span></span></code></pre></div>
 <p>You can even just use the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function on the output from <code><a href="reference/std_curve_calc.html">std_curve_calc()</a></code> to plot the calculted values onto your standard curve.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">calc_unk</span><span class="op">)</span></code></pre></div>
@@ -200,6 +215,7 @@
 <ul class="list-unstyled">
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
 <li><a href="https://CRAN.R-project.org/package=standard" class="external-link"><img src="https://www.r-pkg.org/badges/version/standard" alt="CRAN status"></a></li>
+<li><a href="https://app.codecov.io/gh/rforbiochemists/standard?branch=master" class="external-link"><img src="https://codecov.io/gh/rforbiochemists/standard/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>
 </div>
 
