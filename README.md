@@ -9,6 +9,8 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/standard)](https://CRAN.R-project.org/package=standard)
+[![Codecov test
+coverage](https://codecov.io/gh/rforbiochemists/standard/branch/master/graph/badge.svg)](https://app.codecov.io/gh/rforbiochemists/standard?branch=master)
 <!-- badges: end -->
 
 `{standard}` provides a simplified interface for fitting and using
