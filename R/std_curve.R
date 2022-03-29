@@ -46,12 +46,14 @@ std_curve_fit <- function(data, conc, resp, curve = "linear") {
       conc = {{ conc }},
       resp = {{ resp }}
       )
+    class(std_curve) <- c("std_mod_linear", class(std_curve))
   } else if (curve == "log") {
     std_curve <- std_func_logis(
       data = data,
       conc = {{ conc }},
       resp = {{ resp }}
       )
+    class(std_curve) <- c("std_mod_log", class(std_curve))
   }
 
   class(std_curve) <- c("std_curve", class(std_curve))
@@ -69,9 +71,7 @@ calc_std_curve <- function(std_curve) {
   data <- quiet_broom_augment(std_curve)
 
 
-
-
-  if (methods::is(std_curve, "lm")) {
+  if (methods::is(std_curve, "std_mod_linear")) {
     name_x <- colnames(data)[2]
     vec_x <- dplyr::pull(data, !!name_x)
     min_x <- min(vec_x)
@@ -87,7 +87,7 @@ calc_std_curve <- function(std_curve) {
         .data$.fitted
       )
     df
-  } else if (methods::is(std_curve, "nls")) {
+  } else if (methods::is(std_curve, "std_mod_log")) {
     name_x <- colnames(data)[1]
     name_y <- colnames(data)[2]
     vec_x <- dplyr::pull(data, !!name_x)
@@ -100,8 +100,8 @@ calc_std_curve <- function(std_curve) {
 
     df <- quiet_broom_augment(std_curve, newdata = df) %>%
       dplyr::select(
-        !!name_y := .data$.fitted,
-        !!name_x
+        !!name_x,
+        !!name_y := .data$.fitted
       )
     df
   }
@@ -156,15 +156,27 @@ std_curve_calc <- function(std_curve, unknowns, digits = 3) {
 
   variable_names <- colnames(quiet_broom_augment(std_curve))
 
-  unk <- tibble::tibble(
-    !!variable_names[2] := unknowns
-  )
-
-  calculated_data <- quiet_broom_augment(std_curve, newdata = unk) %>%
-    dplyr::select(
-      !!variable_names[2],
-      !!variable_names[1] := .data$.fitted
+  if (methods::is(std_curve, "std_mod_linear")) {
+    unk <- tibble::tibble(
+      !!variable_names[2] := unknowns
     )
+    calculated_data <- quiet_broom_augment(std_curve, newdata = unk) %>%
+      dplyr::select(
+        !!variable_names[2],
+        !!variable_names[1] := .data$.fitted
+      )
+  }
+  if (methods::is(std_curve, "std_mod_log")) {
+    unk <- tibble::tibble(
+      !!variable_names[1] := unknowns
+    )
+    calculated_data <- quiet_broom_augment(std_curve, newdata = unk) %>%
+      dplyr::select(
+        !!variable_names[1],
+        !!variable_names[2] := .data$.fitted
+      )
+  }
+
 
   calculated_data[, 2] <- round(calculated_data[, 2], digits = digits)
 
@@ -173,7 +185,7 @@ std_curve_calc <- function(std_curve, unknowns, digits = 3) {
     std_calc_data = calculated_data
   )
 
-  output <- structure(output, class = "std_calc")
+  class(output) <- c("std_calc", class(std_curve))
 
   output
 }
@@ -306,109 +318,17 @@ as.data.frame.std_calc <- function(x, row.names = NULL, optional = FALSE, ...) {
 #'   std_curve_calc(unk) %>%
 #'   plot()
 std_curve_plot <- function(data) {
-  if (!(methods::is(data, "std_calc") |
-    methods::is(data, "lm") |
-    methods::is(data, "std_curve"))) {
+  if (!(methods::is(data, "std_calc") | methods::is(data, "std_curve"))) {
     stop("Input must be the output from either std_curve_fit() or std_curve_calc().")
   }
 
-  if (methods::is(data, "std_calc")) {
-    std_calc <- data
-    r_squared <- summary(std_calc[["std_curve"]])[["r.squared"]]
-    raw_data <- std_calc[["std_curve"]][["model"]]
-    std_curve <- std_calc[["std_curve"]]
-    pred_data <- std_calc[["std_calc_data"]]
-
-    # formula_label <- paste0(
-    #   "R<sup>2</sup> = ",
-    #   round(r_squared, 3),
-    #   "<br>",
-    #   std_paste_formula(std_curve),
-    #   "<br>Calculated Unknowns:"
-    # )
-  } else if (methods::is(data, "std_curve")) {
-    std_curve <- data
-    r_squared <- summary(std_curve)[["r.squared"]]
-    raw_data <- broom::augment(std_curve)[, 2:1]
-    # formula_label <- paste0(
-    #   "R<sup>2</sup> = ",
-    #   round(r_squared, 3),
-    #   "<br>",
-    #   std_paste_formula(std_curve)
-    # )
+  if (methods::is(data, "std_mod_linear")) {
+    plot_std_curve_linear(data)
+  } else if (methods::is(data, "std_mod_log")) {
+    plot_std_curve_log(data)
   }
 
-  var_names <- colnames(raw_data)
-  annotation_positions <- data.frame(
-    x = lerp_vec(raw_data[, 1], 0.01),
-    y = lerp_vec(raw_data[, 2], 0.8)
-  )
 
-
-
-
-  plt <- raw_data %>%
-    ggplot2::ggplot(
-      ggplot2::aes_string(var_names[1], var_names[2])
-    ) +
-    ggplot2::geom_point() +
-    ggplot2::geom_line(
-      data = calc_std_curve(std_curve),
-      mapping = ggplot2::aes_string(
-        x = var_names[1],
-        y = var_names[2]
-      ),
-      colour = "gray40"
-    ) +
-    # ggplot2::geom_smooth(
-    #   colour = "gray40",
-    #   method = "lm",
-    #   formula = "y ~ x",
-    #   se = FALSE
-    # ) +
-    ggplot2::theme_classic() +
-    # ggtext::geom_richtext(
-    #   data = annotation_positions,
-    #   mapping = ggplot2::aes(
-    #     x = .data$x,
-    #     y = .data$y,
-    #     label = formula_label
-    #   ),
-    #   fill = NA,
-    #   label.color = NA,
-    #   label.padding = grid::unit(rep(0, 4), "pt"),
-    #   vjust = -0.1,
-    #   hjust = 0
-    # )
-  NULL
-
-  if (methods::is(data, "std_calc")) {
-    plt <- plt +
-      ggplot2::geom_segment(
-        data = pred_data,
-        ggplot2::aes_string(
-          x = var_names[1],
-          xend = var_names[1],
-          y = 0,
-          yend = var_names[2]
-        ),
-        linetype = "dashed"
-      ) +
-      ggplot2::geom_point(
-        data = pred_data,
-        shape = 4,
-        size = 5
-      ) +
-      ggpp::geom_table(
-        data = annotation_positions,
-        label = list(pred_data),
-        mapping = ggplot2::aes(x = .data$x, y = .data$y),
-        hjust = 0,
-        vjust = 1.1
-      )
-  }
-
-  plt
 }
 
 #' Generic Function for Plotting Standard Curve Calculations
