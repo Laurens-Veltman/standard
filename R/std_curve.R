@@ -6,6 +6,7 @@
 #'   standard curve.
 #' @param resp Name of the column that contains the response values for the
 #'   standard curve.
+#' @param curve
 #'
 #' @return A linear model ( [lm()][stats::lm] ) object to be used as a standard
 #'   curve, for use with `standard::std_curve_calc()` `broom::augment()` or
@@ -38,27 +39,57 @@
 #' assay_data %>%
 #'   std_curve_fit(Protein, Absorbance) %>%
 #'   plot()
-std_curve_fit <- function(data, conc, resp) {
+std_curve_fit <- function(data, conc, resp, curve = "linear") {
+  if (curve == "linear") {
+    std_func_linear(
+      data = data,
+      conc = {{ conc }},
+      resp = {{ resp }}
+      )
+  } else if (curve == "log") {
+    std_func_logis(
+      data = data,
+      conc = {{ conc }},
+      resp = {{ resp }}
+      )
+  }
+}
 
-  # do lots of quasiquotation magic to make the formula work with any of the
-  # user-supplied columns
-  # enquoting the given columns, so they can be used in a function
-  in_conc <- rlang::enquo(conc)
-  in_resp <- rlang::enquo(resp)
-  # use quo_name, sym and expr to define the forumlar for the model from the
-  # user supplied columns
-  .f <- rlang::expr(
-    !!dplyr::sym(rlang::quo_name(in_conc)) ~
-      !!dplyr::sym(rlang::quo_name(in_resp))
+#' Generate Points for Plotting a Standard Curve
+#'
+#' @param std_curve A model generated from `std_curve_fit()`
+#' @importFrom rlang := .data
+#' @return
+#'
+#' @examples
+calc_std_curve <- function(std_curve) {
+  data <- quiet_broom_augment(std_curve)
+
+
+
+
+  # if (methods::is(std_curve, "lm")) {
+  #   name_x <- colnames(data)[1]
+  # } else if (methods::is(std_curve, "nls")) {
+  #   name_x <- colnames(data)[2]
+  # }
+
+  name_x <- colnames(data)[2]
+
+  vec_x <- dplyr::pull(data, !!name_x)
+  min_x <- min(vec_x)
+  max_x <- max(vec_x)
+
+  df <- tibble::tibble(
+    !!name_x :=  seq(min_x, max_x, length.out = 100)
+  )
+
+  df <- quiet_broom_augment(std_curve, newdata = df) %>%
+    dplyr::select(
+      !!name_x,
+      .data$.fitted
     )
-
-  # fit the actual linear model with the data and the created forumla
-  std_curve <- stats::lm(.f, data = data)
-
-  # return the model
-  class(std_curve) <- c("std_curve", "lm", "oldClass")
-
-  std_curve
+  df
 }
 
 
@@ -106,21 +137,19 @@ std_curve_fit <- function(data, conc, resp) {
 std_curve_calc <- function(std_curve, unknowns, digits = 3) {
   stopifnot(is.vector(unknowns))
 
-  variable_names <- colnames(std_curve$model)
+  variable_names <- colnames(quiet_broom_augment(std_curve))
 
   unk <- tibble::tibble(
     !!variable_names[2] := unknowns
   )
 
-  calculated_data <- purrr::quietly(broom::augment)(std_curve, newdata = unk)$result %>%
+  calculated_data <- quiet_broom_augment(std_curve, newdata = unk) %>%
     dplyr::select(
       !!variable_names[2],
       !!variable_names[1] := .data$.fitted
     )
 
-  calculated_data[, 2] <- round(calculated_data[, 2],
-    digits = digits
-  )
+  calculated_data[, 2] <- round(calculated_data[, 2], digits = digits)
 
   output <- list(
     std_curve = std_curve,
@@ -300,17 +329,23 @@ std_curve_plot <- function(data) {
 
 
 
+
   plt <- raw_data %>%
     ggplot2::ggplot(
       ggplot2::aes_string(var_names[1], var_names[2])
     ) +
     ggplot2::geom_point() +
-    ggplot2::geom_smooth(
-      colour = "gray40",
-      method = "lm",
-      formula = "y ~ x",
-      se = FALSE
+    ggplot2::geom_line(
+      data = calc_std_curve(std_curve),
+      mapping = ggplot2::aes(y = .fitted),
+      colour = "gray40"
     ) +
+    # ggplot2::geom_smooth(
+    #   colour = "gray40",
+    #   method = "lm",
+    #   formula = "y ~ x",
+    #   se = FALSE
+    # ) +
     ggplot2::theme_classic() +
     ggtext::geom_richtext(
       data = annotation_positions,

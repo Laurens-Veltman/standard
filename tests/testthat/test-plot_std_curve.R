@@ -1,4 +1,4 @@
-test_that("multiplication works", {
+test_that("Plotting Standard Curves", {
  library(standard)
 
  # Protein concentrations of the standards used in the assay

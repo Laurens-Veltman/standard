@@ -32,3 +32,14 @@ lerp_vec <- function(vec, z = 0.5) {
   y <- max(vec)
   lerp(x, y, z)
 }
+
+#' Title
+#'
+#' @param mod
+#' @param ...
+#'
+#' @return
+
+quiet_broom_augment <- function(mod, ...) {
+  purrr::quietly(broom::augment)(mod, ...)$result
+}

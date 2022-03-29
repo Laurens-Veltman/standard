@@ -4,7 +4,7 @@
 \alias{std_curve_fit}
 \title{Create a Standard Curve From Known Data}
 \usage{
-std_curve_fit(data, conc, resp)
+std_curve_fit(data, conc, resp, curve = "linear")
 }
 \arguments{
 \item{data}{A \code{data.frame} that contains the columns for concentration and
@@ -15,6 +15,8 @@ standard curve.}
 
 \item{resp}{Name of the column that contains the response values for the
 standard curve.}
+
+\item{curve}{}
 }
 \value{
 A linear model ( \link[stats:lm]{lm()} ) object to be used as a standard
