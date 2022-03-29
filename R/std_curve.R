@@ -41,18 +41,21 @@
 #'   plot()
 std_curve_fit <- function(data, conc, resp, curve = "linear") {
   if (curve == "linear") {
-    std_func_linear(
+    std_curve <- std_func_linear(
       data = data,
       conc = {{ conc }},
       resp = {{ resp }}
       )
   } else if (curve == "log") {
-    std_func_logis(
+    std_curve <- std_func_logis(
       data = data,
       conc = {{ conc }},
       resp = {{ resp }}
       )
   }
+
+  class(std_curve) <- c("std_curve", class(std_curve))
+  std_curve
 }
 
 #' Generate Points for Plotting a Standard Curve
@@ -68,28 +71,42 @@ calc_std_curve <- function(std_curve) {
 
 
 
-  # if (methods::is(std_curve, "lm")) {
-  #   name_x <- colnames(data)[1]
-  # } else if (methods::is(std_curve, "nls")) {
-  #   name_x <- colnames(data)[2]
-  # }
+  if (methods::is(std_curve, "lm")) {
+    name_x <- colnames(data)[2]
+    vec_x <- dplyr::pull(data, !!name_x)
+    min_x <- min(vec_x)
+    max_x <- max(vec_x)
 
-  name_x <- colnames(data)[2]
-
-  vec_x <- dplyr::pull(data, !!name_x)
-  min_x <- min(vec_x)
-  max_x <- max(vec_x)
-
-  df <- tibble::tibble(
-    !!name_x :=  seq(min_x, max_x, length.out = 100)
-  )
-
-  df <- quiet_broom_augment(std_curve, newdata = df) %>%
-    dplyr::select(
-      !!name_x,
-      .data$.fitted
+    df <- tibble::tibble(
+      !!name_x :=  seq(min_x, max_x, length.out = 100)
     )
-  df
+
+    df <- quiet_broom_augment(std_curve, newdata = df) %>%
+      dplyr::select(
+        !!name_x,
+        .data$.fitted
+      )
+    df
+  } else if (methods::is(std_curve, "nls")) {
+    name_x <- colnames(data)[1]
+    name_y <- colnames(data)[2]
+    vec_x <- dplyr::pull(data, !!name_x)
+    min_x <- min(vec_x)
+    max_x <- max(vec_x)
+
+    df <- tibble::tibble(
+      !!name_x :=  seq(min_x, max_x, length.out = 100)
+    )
+
+    df <- quiet_broom_augment(std_curve, newdata = df) %>%
+      dplyr::select(
+        !!name_y := .data$.fitted,
+        !!name_x
+      )
+    df
+  }
+
+
 }
 
 
@@ -302,23 +319,23 @@ std_curve_plot <- function(data) {
     std_curve <- std_calc[["std_curve"]]
     pred_data <- std_calc[["std_calc_data"]]
 
-    formula_label <- paste0(
-      "R<sup>2</sup> = ",
-      round(r_squared, 3),
-      "<br>",
-      std_paste_formula(std_curve),
-      "<br>Calculated Unknowns:"
-    )
+    # formula_label <- paste0(
+    #   "R<sup>2</sup> = ",
+    #   round(r_squared, 3),
+    #   "<br>",
+    #   std_paste_formula(std_curve),
+    #   "<br>Calculated Unknowns:"
+    # )
   } else if (methods::is(data, "std_curve")) {
     std_curve <- data
     r_squared <- summary(std_curve)[["r.squared"]]
-    raw_data <- std_curve[["model"]]
-    formula_label <- paste0(
-      "R<sup>2</sup> = ",
-      round(r_squared, 3),
-      "<br>",
-      std_paste_formula(std_curve)
-    )
+    raw_data <- broom::augment(std_curve)[, 2:1]
+    # formula_label <- paste0(
+    #   "R<sup>2</sup> = ",
+    #   round(r_squared, 3),
+    #   "<br>",
+    #   std_paste_formula(std_curve)
+    # )
   }
 
   var_names <- colnames(raw_data)
@@ -337,7 +354,10 @@ std_curve_plot <- function(data) {
     ggplot2::geom_point() +
     ggplot2::geom_line(
       data = calc_std_curve(std_curve),
-      mapping = ggplot2::aes(y = .fitted),
+      mapping = ggplot2::aes_string(
+        x = var_names[1],
+        y = var_names[2]
+      ),
       colour = "gray40"
     ) +
     # ggplot2::geom_smooth(
@@ -347,19 +367,20 @@ std_curve_plot <- function(data) {
     #   se = FALSE
     # ) +
     ggplot2::theme_classic() +
-    ggtext::geom_richtext(
-      data = annotation_positions,
-      mapping = ggplot2::aes(
-        x = .data$x,
-        y = .data$y,
-        label = formula_label
-      ),
-      fill = NA,
-      label.color = NA,
-      label.padding = grid::unit(rep(0, 4), "pt"),
-      vjust = -0.1,
-      hjust = 0
-    )
+    # ggtext::geom_richtext(
+    #   data = annotation_positions,
+    #   mapping = ggplot2::aes(
+    #     x = .data$x,
+    #     y = .data$y,
+    #     label = formula_label
+    #   ),
+    #   fill = NA,
+    #   label.color = NA,
+    #   label.padding = grid::unit(rep(0, 4), "pt"),
+    #   vjust = -0.1,
+    #   hjust = 0
+    # )
+  NULL
 
   if (methods::is(data, "std_calc")) {
     plt <- plt +

@@ -15,7 +15,7 @@ std_func_logis <- function(data, conc, resp) {
   in_resp <- dplyr::sym(rlang::quo_name(rlang::enquo(resp)))
   # use quo_name, sym and expr to define the forumlar for the model from the
   # user supplied columns
-  .f <- rlang::expr(!!in_resp ~ SSlogis(!!in_conc, Asym, xmid, scal))
+  .f <- rlang::expr(!!in_conc ~ SSlogis(!!in_resp, Asym, xmid, scal))
 
   stats::nls(formula = .f, data = data)
 }
