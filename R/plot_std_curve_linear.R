@@ -47,15 +47,11 @@ plot_std_curve_linear <- function(data) {
 
 
   plt <- raw_data %>%
-    ggplot2::ggplot(
-      ggplot2::aes_string(var_names[1], var_names[2])
-    ) +
+    ggplot2::ggplot(ggplot2::aes_string(var_names[1], var_names[2])) +
     ggplot2::geom_point() +
-    ggplot2::geom_smooth(
-      colour = "gray40",
-      method = "lm",
-      formula = "y ~ x",
-      se = FALSE
+    ggplot2::geom_line(
+      data = linear_mod_predictor(std_curve),
+      colour = "gray40"
     ) +
     ggplot2::theme_classic() +
     ggtext::geom_richtext(

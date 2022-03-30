@@ -73,6 +73,10 @@ calc_std_curve <- function(std_curve) {
 
   if (methods::is(std_curve, "std_mod_linear")) {
     name_x <- colnames(data)[2]
+    name_y <- colnames(data)[1]
+    vec_y <- dplyr::pull(data, !!name_y)
+    min_y <- min(vec_y)
+    max_y <- max(vec_y)
     vec_x <- dplyr::pull(data, !!name_x)
     min_x <- min(vec_x)
     max_x <- max(vec_x)
@@ -85,8 +89,17 @@ calc_std_curve <- function(std_curve) {
       dplyr::select(
         !!name_x,
         .data$.fitted
+      ) %>%
+      dplyr::filter(
+        .data$.fitted > min_y
+      ) %>%
+      dplyr::rename(
+        !!name_y := .data$.fitted
       )
+
+
     df
+
   } else if (methods::is(std_curve, "std_mod_log")) {
     name_x <- colnames(data)[1]
     name_y <- colnames(data)[2]

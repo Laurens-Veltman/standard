@@ -43,3 +43,40 @@ lerp_vec <- function(vec, z = 0.5) {
 quiet_broom_augment <- function(mod, ...) {
   purrr::quietly(broom::augment)(mod, ...)$result
 }
+
+#' Predicts Values for Line of Best Fit for Linear Model
+#'
+#' @param model `lm` from `std_curve_fit()`
+#' @param values vector of concentration values to predict response for.
+#'
+#' @return a [tibble][tibble::tibble-package] with a column for concentrations
+#'   and a column for predicted response
+#'
+#' @examples
+linear_mod_predictor <- function(model, values = NULL) {
+
+  model_data <- standard:::quiet_broom_augment(model)
+  name_x <- colnames(model_data)[1]
+  name_y <- colnames(model_data)[2]
+
+  if (is.null(values)) {
+    values <-
+      seq(min(model_data[, name_x]), max(model_data[, name_x]), length.out = 100)
+  }
+
+  coefs <- coef(model)
+  c <- coefs[1]
+  m <- coefs[2]
+
+  # rearrange the linear equation, to predict values of response from values of
+  # concentration
+  # y = mx + c, so (y - c) / m = x
+  pred_values <- (values - c) / m
+
+  df <- tibble::tibble(
+    !!name_x := values,
+    !!name_y := pred_values
+  )
+
+  df
+}
