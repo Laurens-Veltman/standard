@@ -50,48 +50,53 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">std_paste_formula</span><span class="op">(</span><span class="va">std_curve</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">std_paste_formula</span><span class="op">(</span><span class="va">std_curve</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>std_curve</dt>
 <dd><p>object of class std_curve, the output of <code><a href="std_curve_fit.html">std_curve_fit()</a></code></p></dd>
+
+
 <dt>digits</dt>
 <dd><p>Number of decimal places to round numbers in the formula to.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a string of the extracted formula from the standard curve</p>
+    
+
+<p>a string of the extracted formula from the standard curve</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rforbiochemists/standard" class="external-link">standard</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Protein concentrations of the standards used in the assay</span></span>
-<span class="r-in"><span class="va">prot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="fl">0.000</span>, <span class="fl">0.016</span>, <span class="fl">0.031</span>, <span class="fl">0.063</span>, <span class="fl">0.125</span>, <span class="fl">0.250</span>, <span class="fl">0.500</span>, <span class="fl">1.000</span>,</span>
-<span class="r-in">  <span class="fl">0.000</span>, <span class="fl">0.016</span>, <span class="fl">0.031</span>, <span class="fl">0.063</span>, <span class="fl">0.125</span>, <span class="fl">0.250</span>, <span class="fl">0.500</span>, <span class="fl">1.000</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># absorbance readins from the standards used in the assay</span></span>
-<span class="r-in"><span class="va">abs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="fl">0.329</span>, <span class="fl">0.352</span>, <span class="fl">0.349</span>, <span class="fl">0.379</span>, <span class="fl">0.417</span>, <span class="fl">0.491</span>, <span class="fl">0.668</span>, <span class="fl">0.956</span>,</span>
-<span class="r-in">  <span class="fl">0.327</span>, <span class="fl">0.341</span>, <span class="fl">0.355</span>, <span class="fl">0.383</span>, <span class="fl">0.417</span>, <span class="fl">0.446</span>, <span class="fl">0.655</span>, <span class="fl">0.905</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">assay_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span class="r-in">  Protein <span class="op">=</span> <span class="va">prot</span>,</span>
-<span class="r-in">  Absorbance <span class="op">=</span> <span class="va">abs</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># unknown concentrations</span></span>
-<span class="r-in"><span class="va">unk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.554</span>, <span class="fl">0.568</span>, <span class="fl">0.705</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">assay_data</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="std_curve_fit.html">std_curve_fit</a></span><span class="op">(</span><span class="va">Protein</span>, <span class="va">Absorbance</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">std_paste_formula</span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rforbiochemists/standard" class="external-link">standard</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Protein concentrations of the standards used in the assay</span></span></span>
+<span class="r-in"><span><span class="va">prot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fl">0.000</span>, <span class="fl">0.016</span>, <span class="fl">0.031</span>, <span class="fl">0.063</span>, <span class="fl">0.125</span>, <span class="fl">0.250</span>, <span class="fl">0.500</span>, <span class="fl">1.000</span>,</span></span>
+<span class="r-in"><span>  <span class="fl">0.000</span>, <span class="fl">0.016</span>, <span class="fl">0.031</span>, <span class="fl">0.063</span>, <span class="fl">0.125</span>, <span class="fl">0.250</span>, <span class="fl">0.500</span>, <span class="fl">1.000</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># absorbance readins from the standards used in the assay</span></span></span>
+<span class="r-in"><span><span class="va">abs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fl">0.329</span>, <span class="fl">0.352</span>, <span class="fl">0.349</span>, <span class="fl">0.379</span>, <span class="fl">0.417</span>, <span class="fl">0.491</span>, <span class="fl">0.668</span>, <span class="fl">0.956</span>,</span></span>
+<span class="r-in"><span>  <span class="fl">0.327</span>, <span class="fl">0.341</span>, <span class="fl">0.355</span>, <span class="fl">0.383</span>, <span class="fl">0.417</span>, <span class="fl">0.446</span>, <span class="fl">0.655</span>, <span class="fl">0.905</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">assay_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  Protein <span class="op">=</span> <span class="va">prot</span>,</span></span>
+<span class="r-in"><span>  Absorbance <span class="op">=</span> <span class="va">abs</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># unknown concentrations</span></span></span>
+<span class="r-in"><span><span class="va">unk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.554</span>, <span class="fl">0.568</span>, <span class="fl">0.705</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">assay_data</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="std_curve_fit.html">std_curve_fit</a></span><span class="op">(</span><span class="va">Protein</span>, <span class="va">Absorbance</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">std_paste_formula</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Protein = 1.646 * Absorbance - 0.551"</span>
 </code></pre></div>
     </div>
@@ -107,7 +112,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

@@ -68,7 +68,6 @@
 <div class="page-header"><h1 id="standard">standard<a class="anchor" aria-label="anchor" href="#standard"></a>
 </h1></div>
 <!-- badges: start -->
-
 <p><a href="https://github.com/rforbiochemists/standard" class="external-link">standard</a> provides a simplified interface for fitting and using standard curves in R for work in biochemistry and molecular biology. Many assays conducted in laboratory environments require the creation of standard curves from known samples to then calculate the concentrations of unkown samples.</p>
 <p>The workflow usually includes the fitting of a model (usually linear) to a set of readings (in the example below, absorbance @ 660 nm) from samples of known concentrations, extracting an equation from the model in the format <code>y = mx + c</code> and using this formula to calculate the unkown values.</p>
 <p>This task can be conducted in Microsoft Excel, other spreadsheet programs, and various software packages that come with some plate readers and other pieces of laboratory equipment.</p>
@@ -87,7 +86,7 @@
 </h2>
 <p>Currently no published on CRAN, but install from GitHub with the following:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"rforbiochemists/standard"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"rforbiochemists/standard"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
@@ -153,7 +152,7 @@
 <p>We can see that internally, R has fitted a linear model to the data, and has printed a range of summary statistics. While these are useful for more complex modelling, we are mostly concerned with the R<sup>2</sup> value, to tell how linear our standards are, and what the final equation is for calculating protein concentrations from the absorbance readings of unknown samples.</p>
 <p>We can use the base <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function to plot the standard curve with relevant information included on the plot.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">our_std_curve</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">our_std_curve</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-plotting-std-curve-1.png" width="100%"></p>
 <p>With the formula now known, you can either use this formula to manually calculate your protein concentrations from their absorbance values, or use the <code><a href="reference/std_curve_calc.html">std_curve_calc()</a></code> function which will take a <code>standard curve</code> from <code><a href="reference/std_curve_fit.html">std_curve_fit()</a></code> and a numeric vector of observtations (in this case the absorbance readings), and return a data frame of the calculated values for you.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>unk <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.554</span>, <span class="fl">0.568</span>, <span class="fl">0.705</span>)</span>
@@ -172,7 +171,7 @@
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="dv">3</span>      <span class="fl">0.705</span>   <span class="fl">0.609</span></span></code></pre></div>
 <p>You can even just use the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function on the output from <code><a href="reference/std_curve_calc.html">std_curve_calc()</a></code> to plot the calculted values onto your standard curve.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">calc_unk</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">calc_unk</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-plot-unk-1.png" width="100%"></p>
 </div>
 </div>
@@ -195,6 +194,14 @@
 </ul>
 </div>
 
+<div class="community">
+<h2 data-toc-skip>Community</h2>
+<ul class="list-unstyled">
+<li><a href="CONTRIBUTING.html">Contributing guide</a></li>
+<li><a href="CODE_OF_CONDUCT.html">Code of conduct</a></li>
+<li><a href="SUPPORT.html">Getting help</a></li>
+</ul>
+</div>
 
 <div class="citation">
 <h2 data-toc-skip>Citation</h2>
@@ -230,7 +237,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
