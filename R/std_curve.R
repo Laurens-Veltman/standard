@@ -50,7 +50,7 @@ std_curve_fit <- function(data, conc, resp) {
   .f <- rlang::expr(
     !!dplyr::sym(rlang::quo_name(in_conc)) ~
       !!dplyr::sym(rlang::quo_name(in_resp))
-    )
+  )
 
   # fit the actual linear model with the data and the created forumla
   std_curve <- stats::lm(.f, data = data)

@@ -13,6 +13,7 @@ Description: {standard} provices a more simplified interface to the linear
 License: MIT + file LICENSE
 Suggests: 
     covr,
+    roxygen2,
     testthat (>= 3.0.0),
     vdiffr
 Config/testthat/edition: 3
@@ -25,7 +26,7 @@ Imports:
     magrittr,
     broom,
     purrr,
-    rlang,
+    rlang (>= 0.4.11),
     dplyr,
     ggpp,
     stringr,
