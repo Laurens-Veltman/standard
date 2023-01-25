@@ -3,8 +3,8 @@
 #' @param x Number to calculate decimal places.
 #'
 n_decimal <- function(x) {
-  max_dec <- stringr::str_extract(as.character(x), "\\.\\d+$") %>%
-    nchar() %>%
+  max_dec <- stringr::str_extract(as.character(x), "\\.\\d+$") |>
+    nchar() |>
     min()
 
   max_dec - 1

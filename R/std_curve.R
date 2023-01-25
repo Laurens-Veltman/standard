@@ -21,7 +21,7 @@
 #'   0.000, 0.016, 0.031, 0.063, 0.125, 0.250, 0.500, 1.000
 #' )
 #'
-#' # absorbance readins from the standards used in the assay
+#' # absorbance readings from the standards used in the assay
 #' abs <- c(
 #'   0.329, 0.352, 0.349, 0.379, 0.417, 0.491, 0.668, 0.956,
 #'   0.327, 0.341, 0.355, 0.383, 0.417, 0.446, 0.655, 0.905
@@ -35,8 +35,8 @@
 #' unk <- c(0.554, 0.568, 0.705)
 #'
 #'
-#' assay_data %>%
-#'   std_curve_fit(Protein, Absorbance) %>%
+#' assay_data |>
+#'   std_curve_fit(Protein, Absorbance) |>
 #'   plot()
 std_curve_fit <- function(data, conc, resp) {
 
@@ -56,7 +56,7 @@ std_curve_fit <- function(data, conc, resp) {
   std_curve <- stats::lm(.f, data = data)
 
   # return the model
-  class(std_curve) <- c("std_curve", "lm", "oldClass")
+  class(std_curve) <- c("std_curve", class(std_curve))
 
   std_curve
 }
@@ -99,9 +99,9 @@ std_curve_fit <- function(data, conc, resp) {
 #' unk <- c(0.554, 0.568, 0.705)
 #'
 #'
-#' assay_data %>%
-#'   std_curve_fit(Protein, Absorbance) %>%
-#'   std_curve_calc(unk) %>%
+#' assay_data |>
+#'   std_curve_fit(Protein, Absorbance) |>
+#'   std_curve_calc(unk) |>
 #'   plot()
 std_curve_calc <- function(std_curve, unknowns, digits = 3) {
   stopifnot(is.vector(unknowns))
@@ -112,10 +112,10 @@ std_curve_calc <- function(std_curve, unknowns, digits = 3) {
     !!variable_names[2] := unknowns
   )
 
-  calculated_data <- purrr::quietly(broom::augment)(std_curve, newdata = unk)$result %>%
+  calculated_data <- purrr::quietly(broom::augment)(std_curve, newdata = unk)$result  |>
     dplyr::select(
       !!variable_names[2],
-      !!variable_names[1] := .data$.fitted
+      !!variable_names[1] := ".fitted"
     )
 
   calculated_data[, 2] <- round(calculated_data[, 2],
@@ -163,8 +163,8 @@ std_curve_calc <- function(std_curve, unknowns, digits = 3) {
 #' unk <- c(0.554, 0.568, 0.705)
 #'
 #'
-#' assay_data %>%
-#'   std_curve_fit(Protein, Absorbance) %>%
+#' assay_data |>
+#'   std_curve_fit(Protein, Absorbance) |>
 #'   std_paste_formula()
 std_paste_formula <- function(std_curve, digits = 3) {
   numbers <- stats::coef(std_curve)
@@ -230,7 +230,7 @@ as.data.frame.std_calc <- function(x, row.names = NULL, optional = FALSE, ...) {
 #' @return a [ggplot2][ggplot2::ggplot] plot with the standard curve and unkowns
 #'   plotted, whch can be further customised using `ggplot` options.
 #' @export
-#' @importFrom rlang .data
+#' @importFrom rlang .data !!
 #'
 #' @examples
 #' library(standard)
@@ -255,9 +255,9 @@ as.data.frame.std_calc <- function(x, row.names = NULL, optional = FALSE, ...) {
 #' unk <- c(0.554, 0.568, 0.705)
 #'
 #'
-#' assay_data %>%
-#'   std_curve_fit(Protein, Absorbance) %>%
-#'   std_curve_calc(unk) %>%
+#' assay_data |>
+#'   std_curve_fit(Protein, Absorbance) |>
+#'   std_curve_calc(unk) |>
 #'   plot()
 std_curve_plot <- function(data) {
   if (!(methods::is(data, "std_calc") |
@@ -300,9 +300,9 @@ std_curve_plot <- function(data) {
 
 
 
-  plt <- raw_data %>%
+  plt <- raw_data |>
     ggplot2::ggplot(
-      ggplot2::aes_string(var_names[1], var_names[2])
+      ggplot2::aes(!!rlang::sym(var_names[1]), !!rlang::sym(var_names[2]))
     ) +
     ggplot2::geom_point() +
     ggplot2::geom_smooth(
@@ -330,11 +330,11 @@ std_curve_plot <- function(data) {
     plt <- plt +
       ggplot2::geom_segment(
         data = pred_data,
-        ggplot2::aes_string(
-          x = var_names[1],
-          xend = var_names[1],
+        ggplot2::aes(
+          x = !!rlang::sym(var_names[1]),
+          xend = !!rlang::sym(var_names[1]),
           y = 0,
-          yend = var_names[2]
+          yend = !!rlang::sym(var_names[2])
         ),
         linetype = "dashed"
       ) +

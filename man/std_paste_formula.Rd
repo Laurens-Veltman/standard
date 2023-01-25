@@ -40,7 +40,7 @@ assay_data <- data.frame(
 unk <- c(0.554, 0.568, 0.705)
 
 
-assay_data \%>\%
-  std_curve_fit(Protein, Absorbance) \%>\%
+assay_data |>
+  std_curve_fit(Protein, Absorbance) |>
   std_paste_formula()
 }

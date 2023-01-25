@@ -20,10 +20,9 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 Imports: 
     tibble,
-    magrittr,
     broom,
     purrr,
     rlang (>= 0.4.11),
@@ -33,5 +32,5 @@ Imports:
     ggtext,
     ggplot2,
     methods
-URL: https://github.com/rforbiochemists/standard
-BugReports: https://github.com/rforbiochemists/standard/issues
+URL: https://github.com/bradyajohnston/standard
+BugReports: https://github.com/bradyajohnston/standard/issues

@@ -1,4 +1,4 @@
-test_that("multiplication works", {
+test_that("Plotting Standard Curves", {
   library(standard)
 
   # Protein concentrations of the standards used in the assay
@@ -21,13 +21,13 @@ test_that("multiplication works", {
   unk <- c(0.554, 0.568, 0.705)
 
 
-  plt <- assay_data %>%
-    std_curve_fit(Protein, Absorbance) %>%
+  plt <- assay_data |>
+    std_curve_fit(Protein, Absorbance) |>
     plot()
 
-  plt2 <- assay_data %>%
-    std_curve_fit(Protein, Absorbance) %>%
-    std_curve_calc(unk) %>%
+  plt2 <- assay_data |>
+    std_curve_fit(Protein, Absorbance) |>
+    std_curve_calc(unk) |>
     plot()
 
 

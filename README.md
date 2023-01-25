@@ -11,6 +11,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 status](https://www.r-pkg.org/badges/version/standard)](https://CRAN.R-project.org/package=standard)
 [![Codecov test
 coverage](https://codecov.io/gh/rforbiochemists/standard/branch/master/graph/badge.svg)](https://app.codecov.io/gh/rforbiochemists/standard?branch=master)
+[![R-CMD-check](https://github.com/BradyAJohnston/standard/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/BradyAJohnston/standard/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 `{standard}` provides a simplified interface for fitting and using
@@ -57,7 +58,7 @@ Currently no published on CRAN, but install from GitHub with the
 following:
 
 ``` r
-remotes::install_github("rforbiochemists/standard")
+install.packages("standard", repo = "https://bradyajohnston.r-universe.dev")
 ```
 
 ## Example
@@ -162,7 +163,7 @@ calc_unk <- std_curve_calc(
   )
 
 calc_unk
-  # A tibble: 3 x 2
+  # A tibble: 3 × 2
     Absorbance Protein
          <dbl>   <dbl>
   1      0.554   0.361

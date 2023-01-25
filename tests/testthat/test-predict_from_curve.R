@@ -21,7 +21,7 @@ test_that("Basic Standard Curve Workflow", {
 
   unk <- c(0.554, 0.568, 0.705)
 
-  calculated <- standard::std_curve_fit(assay_data, prot, abs) %>%
+  calculated <- standard::std_curve_fit(assay_data, prot, abs) |>
     standard::std_curve_calc(unk)
 
   expect_equal(ideal_results, round(calculated$std_calc_data, 3))

@@ -56,7 +56,7 @@ In `{standard}` we have reduced the process down to two main functions.
 Currently no published on CRAN, but install from GitHub with the following:
 
 ``` r
-remotes::install_github("rforbiochemists/standard")
+install.packages("standard", repo = "https://bradyajohnston.r-universe.dev")
 ```
 
 ## Example
