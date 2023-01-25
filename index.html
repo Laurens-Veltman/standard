@@ -47,7 +47,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/rforbiochemists/standard/" class="external-link">
+  <a href="https://github.com/bradyajohnston/standard/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -68,12 +68,13 @@
 <div class="page-header"><h1 id="standard">standard<a class="anchor" aria-label="anchor" href="#standard"></a>
 </h1></div>
 <!-- badges: start -->
-<p><a href="https://github.com/rforbiochemists/standard" class="external-link">standard</a> provides a simplified interface for fitting and using standard curves in R for work in biochemistry and molecular biology. Many assays conducted in laboratory environments require the creation of standard curves from known samples to then calculate the concentrations of unkown samples.</p>
+
+<p><a href="https://github.com/bradyajohnston/standard" class="external-link">standard</a> provides a simplified interface for fitting and using standard curves in R for work in biochemistry and molecular biology. Many assays conducted in laboratory environments require the creation of standard curves from known samples to then calculate the concentrations of unkown samples.</p>
 <p>The workflow usually includes the fitting of a model (usually linear) to a set of readings (in the example below, absorbance @ 660 nm) from samples of known concentrations, extracting an equation from the model in the format <code>y = mx + c</code> and using this formula to calculate the unkown values.</p>
 <p>This task can be conducted in Microsoft Excel, other spreadsheet programs, and various software packages that come with some plate readers and other pieces of laboratory equipment.</p>
 <p>These approaches however don’t allow for automation of processing, or reproducibility and transparency of experiments.</p>
-<p>Many wet-lab scientists would like to use the R programming language more in their work, including for the task of fitting and using standard curves. The model-fitting cababiliies and interface in R is enourmous however, and can often be overwhelming and not straight forward, when all a user needs to do is fit one model, and do some calculations with the fitted model. This is where <a href="https://github.com/rforbiochemists/standard" class="external-link">standard</a> comes in.</p>
-<p>In <a href="https://github.com/rforbiochemists/standard" class="external-link">standard</a> we have reduced the process down to two main functions.</p>
+<p>Many wet-lab scientists would like to use the R programming language more in their work, including for the task of fitting and using standard curves. The model-fitting cababiliies and interface in R is enourmous however, and can often be overwhelming and not straight forward, when all a user needs to do is fit one model, and do some calculations with the fitted model. This is where <a href="https://github.com/bradyajohnston/standard" class="external-link">standard</a> comes in.</p>
+<p>In <a href="https://github.com/bradyajohnston/standard" class="external-link">standard</a> we have reduced the process down to two main functions.</p>
 <ol style="list-style-type: decimal">
 <li>
 <code><a href="reference/std_curve_fit.html">std_curve_fit()</a></code> which takes the data from the known samples and fits a standard curve.</li>
@@ -86,7 +87,7 @@
 </h2>
 <p>Currently no published on CRAN, but install from GitHub with the following:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"rforbiochemists/standard"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"standard"</span>, repo <span class="op">=</span> <span class="st">"https://bradyajohnston.r-universe.dev"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
@@ -163,7 +164,7 @@
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>calc_unk</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># A tibble: 3 x 2</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># A tibble: 3 × 2</span></span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    Absorbance Protein</span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>         <span class="sc">&lt;</span>dbl<span class="sc">&gt;</span>   <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>      <span class="fl">0.554</span>   <span class="fl">0.361</span></span>
@@ -181,8 +182,8 @@
     <div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/rforbiochemists/standard/" class="external-link">Browse source code</a></li>
-<li><a href="https://github.com/rforbiochemists/standard/issues" class="external-link">Report a bug</a></li>
+<li><a href="https://github.com/bradyajohnston/standard/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/bradyajohnston/standard/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
@@ -223,6 +224,7 @@
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
 <li><a href="https://CRAN.R-project.org/package=standard" class="external-link"><img src="https://www.r-pkg.org/badges/version/standard" alt="CRAN status"></a></li>
 <li><a href="https://app.codecov.io/gh/rforbiochemists/standard?branch=master" class="external-link"><img src="https://codecov.io/gh/rforbiochemists/standard/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://github.com/BradyAJohnston/standard/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/BradyAJohnston/standard/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 </ul>
 </div>
 
@@ -237,7 +239,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

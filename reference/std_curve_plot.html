@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/rforbiochemists/standard/" class="external-link">
+  <a href="https://github.com/bradyajohnston/standard/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -41,7 +41,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plot a Standard Curve</h1>
-    <small class="dont-index">Source: <a href="https://github.com/rforbiochemists/standard/blob/HEAD/R/std_curve.R" class="external-link"><code>R/std_curve.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/bradyajohnston/standard/blob/HEAD/R/std_curve.R" class="external-link"><code>R/std_curve.R</code></a></small>
     <div class="hidden name"><code>std_curve_plot.Rd</code></div>
     </div>
 
@@ -69,7 +69,7 @@ plotted, whch can be further customised using <code>ggplot</code> options.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rforbiochemists/standard" class="external-link">standard</a></span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bradyajohnston/standard" class="external-link">standard</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Protein concentrations of the standards used in the assay</span></span></span>
 <span class="r-in"><span><span class="va">prot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
@@ -91,9 +91,9 @@ plotted, whch can be further customised using <code>ggplot</code> options.</p>
 <span class="r-in"><span><span class="va">unk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.554</span>, <span class="fl">0.568</span>, <span class="fl">0.705</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">assay_data</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="std_curve_fit.html">std_curve_fit</a></span><span class="op">(</span><span class="va">Protein</span>, <span class="va">Absorbance</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="std_curve_calc.html">std_curve_calc</a></span><span class="op">(</span><span class="va">unk</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="va">assay_data</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="std_curve_fit.html">std_curve_fit</a></span><span class="op">(</span><span class="va">Protein</span>, <span class="va">Absorbance</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="std_curve_calc.html">std_curve_calc</a></span><span class="op">(</span><span class="va">unk</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="std_curve_plot-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
@@ -110,7 +110,7 @@ plotted, whch can be further customised using <code>ggplot</code> options.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

@@ -10,6 +10,9 @@
     <loc>/CONTRIBUTING.html</loc>
   </url>
   <url>
+    <loc>/LICENSE-text.html</loc>
+  </url>
+  <url>
     <loc>/LICENSE.html</loc>
   </url>
   <url>
@@ -37,9 +40,6 @@
     <loc>/reference/n_decimal.html</loc>
   </url>
   <url>
-    <loc>/reference/pipe.html</loc>
-  </url>
-  <url>
     <loc>/reference/plot.std_calc.html</loc>
   </url>
   <url>
@@ -62,5 +62,8 @@
   </url>
   <url>
     <loc>/reference/sub-.std_calc.html</loc>
+  </url>
+  <url>
+    <loc>/reference/tidyeval.html</loc>
   </url>
 </urlset>
