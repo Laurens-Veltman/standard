@@ -1,6 +1,6 @@
 Package: standard
 Title: Simplified Fitting and Use of Standard Curves
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: 
     person(given = "Brady",
            family = "Johnston",
