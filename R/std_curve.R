@@ -40,19 +40,20 @@
 #'   plot()
 std_curve_fit <- function(data, conc, resp) {
 
-  # do lots of quasiquotation magic to make the formula work with any of the
-  # user-supplied columns
+  ## do lots of quasiquotation magic to make the formula work with any of the
+  ## user-supplied columns
+
   # enquoting the given columns, so they can be used in a function
   in_conc <- rlang::enquo(conc)
   in_resp <- rlang::enquo(resp)
-  # use quo_name, sym and expr to define the forumlar for the model from the
+  # use quo_name, sym and expr to define the forumla for the model from the
   # user supplied columns
   .f <- rlang::expr(
-    !!dplyr::sym(rlang::quo_name(in_conc)) ~
-      !!dplyr::sym(rlang::quo_name(in_resp))
+    !!rlang::sym(rlang::quo_name(in_conc)) ~
+      !!rlang::sym(rlang::quo_name(in_resp))
   )
 
-  # fit the actual linear model with the data and the created forumla
+  # fit the actual linear model with the data and the created formula
   std_curve <- stats::lm(.f, data = data)
 
   # return the model
@@ -67,9 +68,8 @@ std_curve_fit <- function(data, conc, resp) {
 #' @param std_curve A linear model, created with either `lm()` or
 #'   `standard::std_curve_fit()`
 #' @param unknowns A numeric vector of unknown values, which the standard curve
+#' @param simplify TRUE returns a numeric vector, FALSE returns a `tibble::tibble()`.
 #'   will be used to predict their values.
-#' @param digits Number of decimal places for calculations.
-#'
 #' @return a [tibble][tibble::tibble-package] with a column for the unknown
 #'   values, and a column `.fitted` for the predicted values, based on the
 #'   standard curve.
@@ -103,7 +103,7 @@ std_curve_fit <- function(data, conc, resp) {
 #'   std_curve_fit(Protein, Absorbance) |>
 #'   std_curve_calc(unk) |>
 #'   plot()
-std_curve_calc <- function(std_curve, unknowns, digits = 3) {
+std_curve_calc <- function(std_curve, unknowns, simplify = TRUE) {
   stopifnot(is.vector(unknowns))
 
   variable_names <- colnames(std_curve$model)
@@ -112,22 +112,14 @@ std_curve_calc <- function(std_curve, unknowns, digits = 3) {
     !!variable_names[2] := unknowns
   )
 
-  calculated_data <- purrr::quietly(broom::augment)(std_curve, newdata = unk)$result  |>
-    dplyr::select(
-      !!variable_names[2],
-      !!variable_names[1] := ".fitted"
-    )
+  unk$.fitted <- unname(stats::predict(std_curve, newdata = unk))
 
-  calculated_data[, 2] <- round(calculated_data[, 2],
-    digits = digits
-  )
-
-  output <- list(
-    std_curve = std_curve,
-    std_calc_data = calculated_data
-  )
-
-  output <- structure(output, class = "std_calc")
+  if (simplify) {
+    output <- unk$.fitted
+  } else {
+    colnames(unk) <- variable_names
+    output <- unk
+  }
 
   output
 }
@@ -183,46 +175,6 @@ std_paste_formula <- function(std_curve, digits = 3) {
   )
 }
 
-#' Printing Results of `std_curve_calc()`
-#'
-#' @param x object of class `std_calc`, the output of `std_curve_calc`
-#' @param ... additional arguments to be passed to or from methods.
-#' @export
-#'
-print.std_calc <- function(x, ...) {
-  print(x[["std_calc_data"]])
-}
-
-#' Convert `std_calc` to data frame
-#'
-#' @param x object of class `std_calc`, the output of `std_curve_calc()`
-#' @param row.names Optional vector of rownames.
-#' @param optional logical. If TRUE, setting row names and converting column
-#'   names (to syntactic names: see make.names) is optional. Note that all of
-#'   R's base package as.data.frame() methods use optional only for column names
-#'   treatment, basically with the meaning of data.frame(*, check.names =
-#'   !optional). See also the make.names argument of the matrix method.
-#' @param ... additional arguments to be passed to or from methods.
-#'
-#' @return data.frame
-#' @export
-as.data.frame.std_calc <- function(x, row.names = NULL, optional = FALSE, ...) {
-  as.data.frame(x[["std_calc_data"]], row.names = row.names, optional = optional, ...)
-}
-
-
-#' Generic function for subsetting output of `std_curve_fit()`
-#'
-#' @param x object of class `std_curve`, the output of `std_curve_fit()`
-#' @param i row index
-#' @param j column index
-#'
-#' @return column of tibble
-#' @export
-`[.std_calc` <- function(x, i, j) {
-  x[i, j]
-}
-
 #' Plot a Standard Curve
 #'
 #' @param data Result of `std_curve_pred()` or `std_curve_fit()`.
@@ -260,27 +212,11 @@ as.data.frame.std_calc <- function(x, row.names = NULL, optional = FALSE, ...) {
 #'   std_curve_calc(unk) |>
 #'   plot()
 std_curve_plot <- function(data) {
-  if (!(methods::is(data, "std_calc") |
-    methods::is(data, "lm") |
+  if (!(methods::is(data, "lm") |
     methods::is(data, "std_curve"))) {
-    stop("Input must be the output from either std_curve_fit() or std_curve_calc().")
+    stop("Input must be a linear model of the result of `std_curve_fit().`")
   }
 
-  if (methods::is(data, "std_calc")) {
-    std_calc <- data
-    r_squared <- summary(std_calc[["std_curve"]])[["r.squared"]]
-    raw_data <- std_calc[["std_curve"]][["model"]]
-    std_curve <- std_calc[["std_curve"]]
-    pred_data <- std_calc[["std_calc_data"]]
-
-    formula_label <- paste0(
-      "R<sup>2</sup> = ",
-      round(r_squared, 3),
-      "<br>",
-      std_paste_formula(std_curve),
-      "<br>Calculated Unknowns:"
-    )
-  } else if (methods::is(data, "std_curve")) {
     std_curve <- data
     r_squared <- summary(std_curve)[["r.squared"]]
     raw_data <- std_curve[["model"]]
@@ -290,7 +226,6 @@ std_curve_plot <- function(data) {
       "<br>",
       std_paste_formula(std_curve)
     )
-  }
 
   var_names <- colnames(raw_data)
   annotation_positions <- data.frame(
@@ -326,45 +261,9 @@ std_curve_plot <- function(data) {
       hjust = 0
     )
 
-  if (methods::is(data, "std_calc")) {
-    plt <- plt +
-      ggplot2::geom_segment(
-        data = pred_data,
-        ggplot2::aes(
-          x = !!rlang::sym(var_names[1]),
-          xend = !!rlang::sym(var_names[1]),
-          y = 0,
-          yend = !!rlang::sym(var_names[2])
-        ),
-        linetype = "dashed"
-      ) +
-      ggplot2::geom_point(
-        data = pred_data,
-        shape = 4,
-        size = 5
-      ) +
-      ggpp::geom_table(
-        data = annotation_positions,
-        label = list(pred_data),
-        mapping = ggplot2::aes(x = .data$x, y = .data$y),
-        hjust = 0,
-        vjust = 1.1
-      )
-  }
-
   plt
 }
 
-#' Generic Function for Plotting Standard Curve Calculations
-#'
-#' @param x output of `std_curve_calc()`
-#' @param ... Additional arguments to be passed to `std_curve_plot()`
-#'
-#' @return ggplot2 plot
-#' @export
-plot.std_calc <- function(x, ...) {
-  standard::std_curve_plot(x, ...)
-}
 #' Generic Function for Plotting Fitted Standard Curves
 #'
 #' @param x output of `std_surve_fit()`

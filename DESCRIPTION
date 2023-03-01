@@ -1,5 +1,5 @@
 Package: standard
-Title: Simplified Fitting and Use of Standard Curves
+Title: Simplified Fitting of Standard Curves for Experimental Scientists
 Version: 0.1.0.9000
 Authors@R: 
     person(given = "Brady",
@@ -9,7 +9,11 @@ Authors@R:
            comment = c(ORCID = "0000-0001-6301-2269"))
 Description: {standard} provices a more simplified interface to the linear 
   models system in R for the fitting of standard curves and their usage in 
-  biochemistry and molecular biology.
+  biochemistry and molecular biology. While R Provides a robust ecosystem for 
+  modelling, this remains overwhelming for the majority of wet-lab scientists 
+  and contains unnecessary amounts of complexity. `{standard}` provides a 
+  streamlined experience of this, enabling simplified fitting of stndard curves,
+  and calculation of unknown values.
 License: MIT + file LICENSE
 Suggests: 
     covr,
@@ -23,12 +27,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
 Imports: 
     tibble,
-    broom,
-    purrr,
     rlang (>= 0.4.11),
-    dplyr,
-    ggpp,
-    stringr,
     ggtext,
     ggplot2,
     methods

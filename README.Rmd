@@ -72,7 +72,7 @@ Below we are doing the following:
 1. Plotting the final results with `plot()`.
 
 ```{r fitting-std-curve1}
-library(standard)
+# library(standard)
 
 # Protein concentrations of the standards used in the assay
 prot <- c(0.000, 0.016, 0.031, 0.063, 0.125, 0.250, 0.500, 1.000, 
@@ -114,17 +114,9 @@ unk <- c(0.554, 0.568, 0.705)
 
 calc_unk <- std_curve_calc(
   std_curve = our_std_curve, 
-  unknowns = unk
+  unknowns = unk, 
+  simplify = FALSE
   )
 
-calc_unk
+calc_unk$Absorbance
 ```
-
-You can even just use the `plot()` function on the output from `std_curve_calc()` to plot the calculted values onto your standard curve.
-
-```{r plot-unk}
-plot(calc_unk)
-
-```
-
-

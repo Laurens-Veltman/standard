@@ -4,16 +4,16 @@
 \alias{std_curve_calc}
 \title{Use a Standard Curve to Calculate Unknown Values}
 \usage{
-std_curve_calc(std_curve, unknowns, digits = 3)
+std_curve_calc(std_curve, unknowns, simplify = TRUE)
 }
 \arguments{
 \item{std_curve}{A linear model, created with either \code{lm()} or
 \code{standard::std_curve_fit()}}
 
-\item{unknowns}{A numeric vector of unknown values, which the standard curve
-will be used to predict their values.}
+\item{unknowns}{A numeric vector of unknown values, which the standard curve}
 
-\item{digits}{Number of decimal places for calculations.}
+\item{simplify}{TRUE returns a numeric vector, FALSE returns a \code{tibble::tibble()}.
+will be used to predict their values.}
 }
 \value{
 a \link[tibble:tibble-package]{tibble} with a column for the unknown
