@@ -172,7 +172,7 @@ calc_unk
 ```
 
 You can even just use the `plot()` function on the output from
-`std_curve_calc()` to plot the calculted values onto your standard
+`std_curve_calc()` to plot the calculated values onto your standard
 curve.
 
 ``` r
