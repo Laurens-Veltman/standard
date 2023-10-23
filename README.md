@@ -35,7 +35,7 @@ reproducibility and transparency of experiments.
 
 Many wet-lab scientists would like to use the R programming language
 more in their work, including for the task of fitting and using standard
-curves. The model-fitting cababiliies and interface in R is enourmous
+curves. The model-fitting capabilities and interface in R is enormous
 however, and can often be overwhelming and not straight forward, when
 all a user needs to do is fit one model, and do some calculations with
 the fitted model. This is where `{standard}` comes in.
@@ -49,7 +49,7 @@ In `{standard}` we have reduced the process down to two main functions.
     the standard curve.
 
 With these functions, the use of standard curves for molecular biology
-work in R can be streamlined, and importantly can remain repropducible
+work in R can be streamlined, and importantly can remain reproducible
 and transparent.
 
 ## Installation
